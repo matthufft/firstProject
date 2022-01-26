@@ -1,30 +1,25 @@
 <script>
-	export let name;
+	import Header from './header.svelte';
+	import Footer from './footer.svelte';
+	import Memes from './memeCard.svelte';
+	import HomePage from './views/homePage.svelte';
 </script>
 
+<Header></Header>
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<HomePage/>
 </main>
+<Footer></Footer>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+main {
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+	padding: 1rem;
+	background: #0d1117;
+}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
