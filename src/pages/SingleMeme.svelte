@@ -4,6 +4,7 @@
     let data = $currentMeme;
     let boxes = [];
     console.log('data', data);
+    console.log('props', $$props);
 
     for(let i = 0; i < data.box_count; i++){
         let box = { 
@@ -19,7 +20,7 @@
 
 <div class="container">
     <h1> {data.name} </h1>
-    <div class="meme-card" id={data.id} style="background-image: url({data.url}); width:{data.width}px; height:{data.height}px">
+    <div class="meme-card" id={data.id} style="background-image: url({data.url}); width:{data.width / 2}px; height:{data.height / 2}px">
         {#each boxes as box (box.id)}
             <div use:draggable={ {bounds: 'parent'} } style="font-size: {box.fontSize}px;" class="text-box">{box.text}</div>
         {/each}

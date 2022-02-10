@@ -4,10 +4,8 @@
 
 <div class="header">
     <nav>
-        <span>Memes!</span>
-        <a href="#" class="nav-link">Home</a>
-        <a href="#" class="nav-link">Shop</a>
-        <a href="#" class="nav-link">Account</a>
+        <span>| Svelte Demos |</span>
+        <a href="/" class="nav-link">Home</a>
     </nav>
 </div>
 
@@ -20,6 +18,7 @@ div.header {
 }
 
 nav span {
+    font-size: 20px;
     margin-right: 1rem;
     color: #c9d1d4;
 }
