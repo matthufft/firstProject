@@ -5,7 +5,7 @@
 
 <div id="sidebar">
     <a href="#/memes">Memes</a>
-    <a href="#/bitminer">BitMiner</a>
+    <a href="#/bitminer">Bean Miner</a>
 </div>
 
 
@@ -27,6 +27,7 @@
         font-size: 20px;
         color: #c9d1d4;
         margin-bottom: 1rem;
+        white-space: nowrap;
     }
 
     #sidebar a:hover {
