@@ -1,82 +1,63 @@
 <script>
-$: bitcoin = 0;
+    import UpgradeComp from '../components/bitmineUpgrade.svelte';
+    import {bitcoinBalance, upgrades, intervalVal} from '../stores.js'
 
+    const bitmine = {
+        intervalId: 0,
+        mine: function(){
+            let multiplier = $upgrades.filter(n => n.name == 'Shovels')[0].owned;
+            $bitcoinBalance += 1 * multiplier;
+        },
+        intervalHandler: function(){
+            if($intervalVal > 0){
 
-const bitmine = {
-    clicks: {
-        level: 1,
-        upgradeCost: 15
-    },
-    rigs: {
-        owned: 0,
-        upgradeCost: 50
-    },
-    robots: {
-        owned: 0,
-        upgradeCost: 100
-    },
-    mine: function(){
-        bitcoin += 1 * bitmine.clicks.level;
-    },
-    buyUpgrade: function(upgrade){
-        switch (upgrade) {
-            case 'click':
-                bitmine.clicks.clickLevel += 1;
-                break;
-            case 'rigs':
-                bitmine.rigs += 1;
-                break;
-            case 'robots':
-                bitmine.robots += 1;
-                break;
-            default:
-                break;
+                if(bitmine.intervalId && bitmine.intervalId !== 0) {
+                    clearInterval(bitmine.intervalId);
+                }
+
+                bitmine.intervalId = setInterval(() => {
+                    bitcoinBalance.update(n => n += $intervalVal);
+                }, 1000);
+            }
         }
+
     }
-}
+
+    
+
 </script>
 
 <div class="bitminer-header">
-    <h1>Bitcoin Miner</h1>
-    <p>It's not real bitcoin mining, but it is a neat demo of Svelte's reactivity!</p>
+    <h1>Bean Miner</h1>
+    <p>A neat demo of Svelte's core features such as reactivity, stores, event forwarding and more!</p>
 </div>
 
 <div class="game-container">
     <div class="game-stats">
         <div class="player-balance">
-            <p class="bitcoin-balance">₿: {bitcoin}</p>
+            <p class="bitcoin-balance">Beans: {$bitcoinBalance}</p>
+            <p class="mined-per-sec">Beans/s: {$intervalVal}</p>
         </div>
 
         <div class="tool-stats">
 
             <div class="tools">
                 <span class="upgrade-title">Upgrades:</span>
-                <div class="upgrade-card">
-                    <p>Click Level: 1</p>
-                    <button>Buy: ₿ </button>
-                </div>
+                {#each $upgrades as upgrade}
+                    <UpgradeComp 
+                        on:intervalUpdate={bitmine.intervalHandler}
+                        name={upgrade.name} 
+                        quantity={upgrade.owned} 
+                        upgradeCost={upgrade.upgradeCost}
+                    />
+                {/each}
             </div>
-            
-            <div class="automations">
-                <span class="upgrade-title">Automations:</span>
-                <div class="upgrade-card">
-                    <p>Mining Rigs: 0</p>
-                    <button>Buy: ₿ </button>
-                </div>
-                <div class="upgrade-card">
-                    <p>Robots: 0</p>
-                    <button>Buy: ₿ </button>
-                </div>
-            </div>
-
         </div>
 
     </div>
     <div class="mining-field">
-        
-        <button class="bitcoin-button" on:click={bitmine.mine}><img src="../../bitcoin.png" alt="bitcoin"></button>
-        
-
+            <p>Click to mine beans!</p>
+            <button class="bitcoin-button" on:click={bitmine.mine}><img src="../../beans.png" alt="bitcoin"></button>
     </div>
 </div>
 
@@ -88,10 +69,12 @@ const bitmine = {
 
     .game-container {
        border: var(--border);
+       margin: 1rem;
     }
 
     .mining-field {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         min-height: 500px;
@@ -103,6 +86,15 @@ const bitmine = {
         padding: 0;
         margin: 0;
         background: transparent;
+    }
+
+    .bitcoin-button:hover {
+        cursor: pointer;
+        transform: scale(1.2);
+    }
+
+    .bitcoin-button:active {
+        transform: scale(1.1);
     }
 
     .bitcoin-button img{
@@ -122,7 +114,7 @@ const bitmine = {
         border-right: var(--border);
     }
 
-    .bitcoin-balance {
+    .player-balance p {
         font-size: 32px;
         margin: 0;
     }
@@ -137,24 +129,6 @@ const bitmine = {
 
     .tool-stats .tools {
         display: flex;
-        border-bottom: var(--border);
         padding: 1rem;
     }
-
-    .upgrade-card {
-        display: flex;
-        flex-direction: column;
-        padding: .5rem;
-        border: var(--border);
-        border-radius: 6px;
-        margin-right: 1rem;
-    }
-
-    .tool-stats .automations {
-        display: flex;
-        padding: 1rem;
-    }
-
-
-
 </style>
